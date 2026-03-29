@@ -1,30 +1,71 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="utf-8" />
-  <title>Young Innovators STEM Lab</title>
+  <meta charset="utf-8">
+  <title>Passthrough AR Furniture</title>
+
   <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+
+  <script>
+    AFRAME.registerComponent('spawn-on-click', {
+      init: function () {
+        this.el.addEventListener('click', (evt) => {
+
+          const scene = document.querySelector('a-scene');
+
+          let obj = document.createElement('a-box');
+          obj.setAttribute('position', '0 1 -2');
+          obj.setAttribute('color', '#4CC3D9');
+          obj.setAttribute('scale', '0.8 0.8 0.8');
+
+          scene.appendChild(obj);
+        });
+      }
+    });
+  </script>
 </head>
 
 <body>
-  <a-scene>
 
-    <a-sky color="blue"></a-sky>
-    <a-box position="-1 -0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-    <a-sphere position="0 0.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-    <a-cylinder position="1 -0.25 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-    <a-plane position="0 -1 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-    
-    <a-image src="https://raw.githubusercontent.com/alluringxstalwart/SourceYISL/main/Landscape.png" position="0 5 -10"
-      width="25" height="7.5"></a-image>
-    
-    <a-text value="Young Innovators STEM Lab" position="0 9.5 -10" align="center" color="white" font="mozillavr"
-      width="10" height="5" anchor="center">
-    </a-text>
+<a-scene
+  xr-mode-ui="enabled: true"
+  renderer="colorManagement: true; physicallyCorrectLights: true"
+  webxr="optionalFeatures: hit-test, local-floor, dom-overlay, passthrough; overlayElement: #overlay"
+>
 
+  <!-- PASSTHROUGH BACKGROUND -->
+  <a-entity environment="preset: none"></a-entity>
 
-  </a-scene>
+  <!-- Camera -->
+  <a-entity camera look-controls position="0 1.6 0">
+    <a-cursor color="yellow"></a-cursor>
+  </a-entity>
+
+  <!-- Light -->
+  <a-light type="ambient" intensity="1"></a-light>
+
+  <!-- Instruction UI -->
+  <a-text value="Tap to place furniture"
+          position="0 1.5 -2"
+          align="center"
+          color="white">
+  </a-text>
+
+  <!-- Click Surface -->
+  <a-plane position="0 0 -2"
+           rotation="-90 0 0"
+           width="10"
+           height="10"
+           visible="false"
+           spawn-on-click>
+  </a-plane>
+
+</a-scene>
+
+<div id="overlay"
+     style="position:fixed; bottom:20px; width:100%; text-align:center; color:white;">
+  Passthrough AR Mode Active
+</div>
+
 </body>
-
 </html>
